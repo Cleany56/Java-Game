@@ -1,6 +1,7 @@
 package entity;
 
 import main.KeyHandler;
+import main.UtilityTool;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -18,7 +19,10 @@ public class Player extends Entity{
 
     public final int screenX;
     public final int screenY;
-    public int hasKey = 0;
+    //public int hasKey = 0;
+    int standCounter = 0;
+    
+    
 
     public Player(GamePanel gp, KeyHandler keyH)  {
 
@@ -49,22 +53,29 @@ public class Player extends Entity{
     }
     public void getPlayerImage()  {
 
+        up1 = setup("player_up");
+        up2 = setup("player_up2");
+        down1 = setup("player_down");
+        down2 = setup("player_down2");
+        left1 = setup("player_left");
+        left2 = setup("player_left2");
+        right1 = setup("player_right");
+        right2 = setup("player_right2");
+
+
+    }
+    public BufferedImage setup(String imageName)  {
+
+        UtilityTool uTool = new UtilityTool();
+        BufferedImage image = null;
+
         try {
-            
-            up1 = ImageIO.read(getClass().getResourceAsStream("/res/player/boy_up_1.png"));
-            up2 = ImageIO.read(getClass().getResourceAsStream("/res/player/boy_up_2.png"));
-            down1 = ImageIO.read(getClass().getResourceAsStream("/res/player/boy_down_1.png"));
-            down2 = ImageIO.read(getClass().getResourceAsStream("/res/player/boy_down_2.png"));
-            left1 = ImageIO.read(getClass().getResourceAsStream("/res/player/boy_left_1.png"));
-            left2 = ImageIO.read(getClass().getResourceAsStream("/res/player/boy_left_2.png"));
-            right1 = ImageIO.read(getClass().getResourceAsStream("/res/player/boy_right_1.png"));
-            right2 = ImageIO.read(getClass().getResourceAsStream("/res/player/boy_right_2.png"));
-
+            image = ImageIO.read(getClass().getResourceAsStream("/res/player/" + imageName+ ".png"));
+            image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
         } catch (IOException e) {
-           e.printStackTrace(); 
+            e.printStackTrace();
         }
-
-
+        return image;
     }
 
     public void update ()  {
@@ -86,6 +97,12 @@ public class Player extends Entity{
                 direction = "right";
                 
             }
+            if(dash0n == true) {
+				speed = 8; // you can type any number
+			}
+			if(dash0n == false) {
+				speed = 4;
+			}
             //CHECK TILE COLLISION
             collisionOn = false;
             gp.cChecker.checkTile(this);
@@ -127,47 +144,20 @@ public class Player extends Entity{
 
 
         }
-       
+       else {
+            standCounter++;
+            if(standCounter == 20){
+            spriteNum = 1;
+            standCounter = 0;
+            }
+       }
 
     }
 
     public void pickUpObject(int i){
         if (i != 999) {
             
-            String objectName = gp.obj[i].name;
-
-            switch (objectName) {
-                case "Key":
-                    gp.playSE(1);
-                    hasKey++;
-                    gp.obj[i] = null;
-                    gp.ui.showMessage("You got a key");
-                    break;
-                case "Door":
-                    if (hasKey > 0) {
-                        gp.playSE(3);
-                        gp.obj[i] = null;
-                        hasKey--;
-                        gp.ui.showMessage("You opened the door");
-                    }
-                    else {
-                        gp.ui.showMessage("You need a key!");
-                    }
-                    break;
-
-                case "Boots":
-                    gp.playSE(2);
-                    speed += 1;
-                    gp.obj[i] = null;
-                    gp.ui.showMessage("Speed up");
-                    break;
-                case "Chest":
-                    gp.ui.gameFinished = true;
-                    gp.stopMusic();
-                    gp.playSE(4);
-                    break;
-            
-            }
+         
         }
     }
     public void draw(Graphics2D g2)  {
@@ -206,6 +196,6 @@ public class Player extends Entity{
                 }
                 break;
         }
-        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+        g2.drawImage(image, screenX, screenY, null);
     }
 }
