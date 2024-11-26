@@ -9,6 +9,7 @@ public class NPC_OldMan extends Entity{
         direction = "down";
         speed = 1;
         getImage();
+        setDialouge();
     }
     public void getImage()  {
 
@@ -20,6 +21,12 @@ public class NPC_OldMan extends Entity{
         left2 = setup("/npc/oldman_left_2");
         right1 = setup("/npc/oldman_right_1");
         right2 = setup("/npc/oldman_right_2");
+    }
+    public void setDialouge(){
+        dialogues[0] = "Hello, traveler.";
+        dialogues[1] = "It's dangerous to go alone. /nTake this.";
+        dialogues[2] = "Good luck.";
+        dialogues[3] = "Get Lost.";
     }
     public void setAction(){
         actionLockCounter ++;
@@ -43,5 +50,9 @@ public class NPC_OldMan extends Entity{
             actionLockCounter = 0;
         }
       
+    }
+    public void speak(){
+        // DO THIS SPECIFIC STUFF
+        super.speak();
     }
 }
