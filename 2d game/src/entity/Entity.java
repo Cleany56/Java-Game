@@ -4,9 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
-
 import main.GamePanel;
 import main.UtilityTool;
 
@@ -26,6 +24,10 @@ public class Entity {
     public int actionLockCounter = 0;
     String dialogues[] = new String[20];
     int dialogueIndex = 0;
+
+    //CHARACTER STATUS
+    public int maxLife;
+    public int life;
     
     public Entity(GamePanel gp) {
         this.gp = gp;
