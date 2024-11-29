@@ -1,7 +1,7 @@
 package object;
 
+import java.io.IOException;
 import javax.imageio.ImageIO;
-
 import main.GamePanel;
 
 public class OBJ_Key extends SuperObject {
@@ -13,7 +13,7 @@ public class OBJ_Key extends SuperObject {
         try {
             image = ImageIO.read(getClass().getResourceAsStream("/objects/key.png"));
             uTool.scaleImage(image, gp.tileSize, gp.tileSize);
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         

@@ -1,13 +1,12 @@
 package main;
 
+import entity.Entity;
+import entity.Player;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JPanel;
-
-import entity.Entity;
-import entity.Player;
 import object.SuperObject;
 import tile.TileManager;
 
@@ -47,6 +46,7 @@ public class GamePanel extends JPanel implements Runnable {
 
      //GAME STATE
      public int gameState;
+     public final int titleState = 0;
      public final int playState = 1;
      public final int pauseState = 2;
      public final int dialougeState = 3;
@@ -66,9 +66,9 @@ public class GamePanel extends JPanel implements Runnable {
 
         aSetter.setObject();
         aSetter.setNPC();
-        playMusic(0);
-        stopMusic();
-        gameState = playState;
+        //playMusic(0);
+        //stopMusic();
+        gameState = titleState;
      }
 
      public void startGameThread()  {
@@ -167,8 +167,13 @@ public class GamePanel extends JPanel implements Runnable {
         if (keyH.checkDrawTime == true) {
             drawStart = System.nanoTime();
         }
-        
-        // TILE
+        //TITLE SCREEN
+        if (gameState == titleState) {
+            ui.draw(g2);
+        }
+        //OTHERS
+        else{
+            // TILE
         tileM.draw(g2);
         //OBJECT
         for(int i = 0; i < obj.length; i++){
@@ -189,6 +194,8 @@ public class GamePanel extends JPanel implements Runnable {
         player.draw(g2);
         //UI
         ui.draw(g2);
+        }
+        
         //DEBUG
         if (keyH.checkDrawTime == true) {
             long drawEnd = System.nanoTime();
